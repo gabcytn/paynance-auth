@@ -12,4 +12,9 @@ connection.connect();
 
 router.post("/", (req, res) => {
   // TODO (login logic)
+  res.send({
+    message: "login",
+  });
 });
+
+module.exports = router;

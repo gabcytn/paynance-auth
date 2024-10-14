@@ -13,3 +13,5 @@ connection.connect();
 router.post("/", (req, res) => {
   // TODO (login logic)
 });
+
+module.exports = router;
