@@ -1,20 +1,12 @@
-const express = require("express");
-const router = express.Router();
-const mysql = require("mysql");
+module.exports = (connection, bcrypt) => {
+  const express = require("express");
+  const router = express.Router();
 
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "paynance",
-});
-connection.connect();
+  router.post("/", (req, res) => {
+    const body = req.body;
 
-router.post("/", (req, res) => {
-  // TODO (login logic)
-  res.send({
-    message: "login",
+    // login logic
   });
-});
 
-module.exports = router;
+  return router;
+};
