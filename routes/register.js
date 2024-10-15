@@ -6,24 +6,19 @@ module.exports = (connection) => {
   router.post("/", (req, res) => {
     const body = req.body;
 
-    bcrypt.hash(body.password, 10, (err, hash) => {
+    bcrypt.hash(body.password, 10, (_, hash) => {
       try {
         connection.query(
           "INSERT INTO users (email, password) VALUES (?, ?)",
           [body.email, hash],
           (err) => {
             if (err) {
-              res.contentType("application/json");
-              res.send({
-                message: "Duplicate",
-              });
-              return;
+              if (err.code === "ER_DUP_ENTRY") {
+                return res.status(409).json({ message: "duplicate" });
+              }
+              return res.status(500).json({ message: "Database error" });
             }
-            res.status(200);
-            res.contentType("application/json");
-            res.send({
-              message: "ok",
-            });
+            return res.status(200).json({ message: "ok" });
           }
         );
       } catch (e) {
