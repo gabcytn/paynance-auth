@@ -1,7 +1,6 @@
-module.exports = (connection) => {
+module.exports = (connection, bcrypt) => {
   const express = require("express");
   const router = express.Router();
-  const bcrypt = require("bcrypt");
 
   router.post("/", (req, res) => {
     const body = req.body;
