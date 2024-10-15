@@ -1,17 +1,36 @@
-const express = require("express");
-const router = express.Router();
-const mysql = require("mysql");
+module.exports = (connection) => {
+  const express = require("express");
+  const router = express.Router();
+  const bcrypt = require("bcrypt");
 
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "paynance",
-});
-connection.connect();
+  router.post("/", (req, res) => {
+    const body = req.body;
 
-router.post("/", (req, res) => {
-  // TODO (login logic)
-});
+    bcrypt.hash(body.password, 10, (err, hash) => {
+      try {
+        connection.query(
+          "INSERT INTO users (email, password) VALUES (?, ?)",
+          [body.email, hash],
+          (err) => {
+            if (err) {
+              res.contentType("application/json");
+              res.send({
+                message: "Duplicate",
+              });
+              return;
+            }
+            res.status(200);
+            res.contentType("application/json");
+            res.send({
+              message: "ok",
+            });
+          }
+        );
+      } catch (e) {
+        console.error(e);
+      }
+    });
+  });
 
-module.exports = router;
+  return router;
+};
