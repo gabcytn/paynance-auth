@@ -9,10 +9,10 @@ const loginRoute = require("./routes/login");
 const registerRoute = require("./routes/register");
 
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "paynance",
+  host: process.env.DATABASE_HOST,
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_NAME,
 });
 
 app.use(bodyParser.json());
