@@ -7,13 +7,13 @@ module.exports = (connection, bcrypt) => {
 
     try {
       connection.query(
-        "SELECT password FROM users WHERE email = ?",
+        "SELECT id, password FROM users WHERE email = ?",
         [body.email],
         (err, rows) => {
           if (rows.length !== 0) {
             bcrypt.compare(body.password, rows[0].password, (err, result) => {
               if (result === true) {
-                res.status(200).json({ message: "ok" });
+                res.status(200).json({ id: rows[0].id });
                 return;
               } else {
                 res.status(401).json({ message: "failed" });
