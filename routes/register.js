@@ -11,14 +11,11 @@ module.exports = (connection, bcrypt) => {
           "INSERT INTO users (email, password) VALUES (?, ?)",
           [body.email, hash],
           (err) => {
-            if (err) {
-              if (err.code === "ER_DUP_ENTRY") {
-                return res.status(409).json({ message: "duplicate" });
-              }
-              return res.status(500).json({ message: "Database error" });
+            if (err && err.code === "ER_DUP_ENTRY") {
+              return res.status(409).json({ message: "duplicate" });
             }
             return res.status(200).json({ message: "ok" });
-          }
+          },
         );
       } catch (e) {
         console.error(e);
