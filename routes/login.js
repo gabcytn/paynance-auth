@@ -15,9 +15,8 @@ module.exports = (connection, bcrypt) => {
 
           bcrypt.compare(body.password, rows[0].password, (_, result) => {
             if (result) return res.status(200).json({ id: rows[0].id });
+            res.status(401).json({ message: "failed" });
           });
-
-          res.status(401).json({ message: "failed" });
         },
       );
     } catch (e) {
